@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -49,20 +50,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDUGT1AtdaHJhE8LQ3VTMd3b-vhumBo-g8',
-    appId: '1:827631731687:android:4361f4b332f59fc1797342',
-    messagingSenderId: '827631731687',
-    projectId: 'social-media-app35',
-    storageBucket: 'social-media-app35.firebasestorage.app',
+  static FirebaseOptions get android => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_ANDROID_API_KEY'] ?? '',
+    appId: dotenv.env['FIREBASE_ANDROID_APP_ID'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_ANDROID_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_ANDROID_PROJECT_ID'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_ANDROID_STORAGE_BUCKET'] ?? '',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDIj80OIQr88bJv78-QKmva3ryG7dLFNWs',
-    appId: '1:827631731687:ios:04b51381a9bd8e45797342',
-    messagingSenderId: '827631731687',
-    projectId: 'social-media-app35',
-    storageBucket: 'social-media-app35.firebasestorage.app',
-    iosBundleId: 'com.example.socialMediaApp',
+  static FirebaseOptions get ios => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_IOS_API_KEY'] ?? '',
+    appId: dotenv.env['FIREBASE_IOS_APP_ID'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_IOS_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_IOS_PROJECT_ID'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_IOS_STORAGE_BUCKET'] ?? '',
+    iosBundleId: dotenv.env['FIREBASE_IOS_BUNDLE_ID'] ?? '',
   );
 }
