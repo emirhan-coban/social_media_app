@@ -23,7 +23,6 @@ class MyButton extends StatelessWidget {
               color: Theme.of(context).colorScheme.inversePrimary,
               fontWeight: FontWeight.bold,
               fontSize: 16,
-              fontFamily: GoogleFonts.montserrat().fontFamily,
             ),
           ),
         ),

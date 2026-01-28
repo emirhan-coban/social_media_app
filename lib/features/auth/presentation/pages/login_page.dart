@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:social_media_app/features/auth/presentation/components/my_button.dart';
 import 'package:social_media_app/features/auth/presentation/components/my_textfield.dart';
+import 'package:social_media_app/features/auth/presentation/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -49,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
               Text(
                 "S I M P L E M E D I A",
                 style: TextStyle(
-                  fontFamily: GoogleFonts.montserrat().fontFamily,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   color: Theme.of(context).colorScheme.inversePrimary,
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
 
               // login button
               MyButton(
-                buttonText: 'Login',
+                buttonText: 'LOGIN',
                 onTap: () {
                   // login functionality
                 },
@@ -110,16 +110,25 @@ class _LoginPageState extends State<LoginPage> {
                     "Don't have an account?",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    "Register now",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.montserrat().fontFamily,
+                  GestureDetector(
+                    onTap: () {
+                      // navigate to register page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Register now",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],

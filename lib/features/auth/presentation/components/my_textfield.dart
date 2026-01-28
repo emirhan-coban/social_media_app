@@ -16,10 +16,7 @@ class MyTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: TextStyle(
-        color: Theme.of(context).colorScheme.inversePrimary,
-        fontFamily: GoogleFonts.montserrat().fontFamily,
-      ),
+      style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
@@ -37,7 +34,6 @@ class MyTextfield extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.inversePrimary,
-          fontFamily: GoogleFonts.montserrat().fontFamily,
         ),
         fillColor: Theme.of(context).colorScheme.secondary,
         filled: true,
