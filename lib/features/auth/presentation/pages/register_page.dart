@@ -12,13 +12,14 @@ If users do not have an account, they can navigate to the registration page via 
 */
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app/features/auth/presentation/components/my_button.dart';
 import 'package:social_media_app/features/auth/presentation/components/my_textfield.dart';
-import 'package:social_media_app/features/auth/presentation/pages/login_page.dart';
+import 'package:social_media_app/features/auth/presentation/cubits/auth_cubit.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final void Function()? togglePages;
+  const RegisterPage({super.key, required this.togglePages});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -30,6 +31,48 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  void register() {
+    // registration functionality
+    final String name = _nameController.text;
+    final String email = _emailController.text;
+    final String password = _passwordController.text;
+    final String confirmPassword = _confirmPasswordController.text;
+
+    // auth cubit
+    final authCubit = context.read<AuthCubit>();
+
+    // ensure fields are not empty
+    if (name.isNotEmpty &&
+        email.isNotEmpty &&
+        password.isNotEmpty &&
+        confirmPassword.isNotEmpty) {
+      if (password == confirmPassword) {
+        // call register method from auth cubit
+        authCubit.register(email, password, name);
+      } else {
+        // show error - passwords do not match
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Passwords do not match")));
+      }
+    } else {
+      // show error - fields are empty
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,12 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 25),
 
                 // sign up button
-                MyButton(
-                  buttonText: 'SIGN UP',
-                  onTap: () {
-                    // sign up functionality
-                  },
-                ),
+                MyButton(buttonText: 'SIGN UP', onTap: register),
 
                 // oauth sign in (google, facebook, apple)
                 const SizedBox(height: 20),
@@ -125,15 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
-                      onTap: () {
-                        // navigate to login page
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        );
-                      },
+                      onTap: widget.togglePages,
                       child: Text(
                         "Login now",
                         style: TextStyle(

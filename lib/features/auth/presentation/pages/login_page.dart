@@ -12,13 +12,12 @@ If users do not have an account, they can navigate to the registration page via 
 */
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:social_media_app/features/auth/presentation/components/my_button.dart';
 import 'package:social_media_app/features/auth/presentation/components/my_textfield.dart';
-import 'package:social_media_app/features/auth/presentation/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final void Function()? togglePages;
+  const LoginPage({super.key, required this.togglePages});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -27,6 +26,38 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  bool _isValidEmail(String email) {
+    // Firebase-compatible email validation
+    // Trim whitespace first
+    email = email.trim();
+    // RFC 5322 simplified email regex
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegex.hasMatch(email);
+  }
+
+  void _login() {
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter a valid email address")),
+      );
+      return;
+    }
+
+    // TODO: login functionality
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +124,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 25),
 
               // login button
-              MyButton(
-                buttonText: 'LOGIN',
-                onTap: () {
-                  // login functionality
-                },
-              ),
+              MyButton(buttonText: 'LOGIN', onTap: _login),
 
               // oauth sign in (google, facebook, apple)
               const SizedBox(height: 20),
@@ -114,15 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(width: 4),
                   GestureDetector(
-                    onTap: () {
-                      // navigate to register page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPage(),
-                        ),
-                      );
-                    },
+                    onTap: widget.togglePages,
                     child: Text(
                       "Register now",
                       style: TextStyle(
